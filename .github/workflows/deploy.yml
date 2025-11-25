@@ -1,0 +1,62 @@
+﻿name: Build and Deploy Slipstream
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # Allow manual triggers
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout game source
+        uses: actions/checkout@v4
+
+      - name: Download Rez compiler
+        run: |
+          # Get latest release info from GitHub API
+          RELEASE_URL=$(curl -s https://api.github.com/repos/mmower/rez/releases/latest \
+            | grep "browser_download_url.*rez_linux.zip" \
+            | cut -d '"' -f 4)
+
+          # Download and extract
+          curl -L -o rez_linux.zip "$RELEASE_URL"
+          unzip rez_linux.zip
+          chmod +x rez_linux
+
+      - name: Compile game
+        run: |
+          ./rez_linux compile src/slipstream.rez
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

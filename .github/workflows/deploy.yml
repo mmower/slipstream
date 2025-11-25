@@ -43,7 +43,7 @@ jobs:
           chmod +x rez_linux
 
           # Verify compiler works
-          ./rez_linux --version
+          ./rez_linux version
 
       - name: Compile game
         run: |

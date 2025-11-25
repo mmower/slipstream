@@ -1,4 +1,4 @@
-﻿name: Build and Deploy Slipstream
+name: Build and Deploy Slipstream
 
 on:
   push:
@@ -30,14 +30,33 @@ jobs:
             | grep "browser_download_url.*rez_linux.zip" \
             | cut -d '"' -f 4)
 
+          if [ -z "$RELEASE_URL" ]; then
+            echo "Error: Could not find rez_linux.zip in latest release"
+            exit 1
+          fi
+
+          echo "Downloading from: $RELEASE_URL"
+
           # Download and extract
           curl -L -o rez_linux.zip "$RELEASE_URL"
           unzip rez_linux.zip
           chmod +x rez_linux
 
+          # Verify compiler works
+          ./rez_linux --version
+
       - name: Compile game
         run: |
           ./rez_linux compile src/slipstream.rez
+
+          # Verify dist directory was created
+          if [ ! -d "dist" ]; then
+            echo "Error: dist directory not created by compiler"
+            exit 1
+          fi
+
+          echo "Build output:"
+          ls -la dist/
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main'

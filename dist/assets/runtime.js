@@ -7228,7 +7228,7 @@ let el;
 </div>
 <div class="box">
 <p>Start adding your content…</p>
-<p>Explore the <a data-event="card" data-target="c_sources" href="javascript:void(0)">source</a>.</p>
+<p>Explore the <a target="_blank" href="assets/source_explorer.html">source</a>.</p>
 <p>See the <a href="http://rez-lang.com/" target="_blank">online documentation</a> for more information.</p>
 </div>
 </section>

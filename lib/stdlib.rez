@@ -32,7 +32,7 @@
 @defaults asset {
   $global: false
   $template: false
-  $auto_id_idex: 0
+  $auto_id_idx: 0
   $js_runtime: false
   $js_defer: false
   $pre_runtime: false
@@ -61,7 +61,7 @@
 @defaults behaviour {
   $global: false
   $template: false
-  $auto_id_idex: 0
+  $auto_id_idx: 0
 
   options: []
   min_children: 0
@@ -90,7 +90,7 @@
 @defaults card {
   $global: false
   $template: false
-  $auto_id_idex: 0
+  $auto_id_idx: 0
   $flipped: false
   $suppress_wrapper: false
 }
@@ -122,7 +122,7 @@
 @defaults effect {
   $global: false
   $template: false
-  $auto_id_idex: 0
+  $auto_id_idx: 0
 }
 
 @schema effect {
@@ -141,7 +141,7 @@
 @defaults faction {
   $global: false
   $template: false
-  $auto_id_idex: 0
+  $auto_id_idx: 0
 }
 
 @schema faction {

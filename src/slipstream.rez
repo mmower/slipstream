@@ -12,12 +12,15 @@
   file_name: "alpinejs.min.js"
   $js_defer: true
   $pre_runtime: true
+  wuggle: true
 }
 
 @asset _BULMA_CSS {
   $built_in: true
   file_name: "bulma.min.css"
 }
+
+@pragma(after_process_ast) source_explorer
 
 @game {
   name: "slipstream"
@@ -56,6 +59,7 @@
     </div>
     <div class="box">
       <p>Start adding your content…</p>
+      <p>Explore the <a card="c_sources">source</a>.</p>
       <p>See the <a href="http://rez-lang.com/" target="_blank">online documentation</a> for more information.</p>
     </div>
   </section>

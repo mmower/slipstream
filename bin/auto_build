@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+# PID of the currently running build
+BUILD_PID=""
+
+run_build() {
+  # If a build is already running, kill it
+  if [[ -n "$BUILD_PID" ]] && kill -0 "$BUILD_PID" 2>/dev/null; then
+    kill "$BUILD_PID" 2>/dev/null
+    wait "$BUILD_PID" 2>/dev/null
+  fi
+
+  # Run the build in the background and save its PID
+  ./bin/build &
+  BUILD_PID=$!
+}
+
+# Watch filesystem changes
+fswatch -o src | while read -r _; do
+  run_build
+done &
+
+# Watch for keypress
+while true; do
+  read -rk key   # zsh-compatible single key read
+  run_build
+done

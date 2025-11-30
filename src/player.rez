@@ -1,0 +1,5 @@
+@actor player {
+  name: "San Holo"
+
+  credits: 2000
+}

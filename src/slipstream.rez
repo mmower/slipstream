@@ -7,6 +7,8 @@
 
 %(../lib/stdlib.rez)
 
+@const build = 1
+
 @asset _ALPINE_JS {
   $built_in: true
   file_name: "alpinejs.min.js"
@@ -20,7 +22,21 @@
   file_name: "bulma.min.css"
 }
 
+@asset js_popper {
+  $pre_runtime: true
+
+  file_name: "popper.min.js"
+}
+
+@asset js_tippy {
+  $pre_runtime: true
+
+  file_name: "tippy.min.js"
+}
+
 @pragma(after_process_ast) source_explorer
+
+@keybinding Escape :end_interlude
 
 @game {
   name: "slipstream"
@@ -44,22 +60,40 @@
   </section>
   <!-- End -->
   ```
+
+  on_after_render: () => {
+    document.querySelectorAll("[data-tippy-content]").forEach(el => tippy(`#${el.id}`, {allowHTML: true}));
+  }
+
+  on_end_interlude: () => {
+    if($game.canResume()) {
+      return RezEvent.sceneResume();
+    } else {
+      return RezEvent.noop();
+    }
+  }
 }
+
+%(scenes.rez)
+%(player.rez)
 
 @scene sc_main {
   initial_card_id: #c_intro
 }
 
 @card c_intro {
+  bindings: [
+    source_explorer: #asset_source_explorer_html
+  ]
   content: ```
   <section class="hero">
     <div class="hero-body">
-      <p class="title">${card.game.title}</p>
+      <p class="title">${card.game.title} ${$build}</p>
       <p class="subtitle">From <span class="has-text-primary">${card.game.author}</span></p>
     </div>
     <div class="box">
       <p>Start adding your content…</p>
-      <p>Explore the <a target="_blank" href="assets/source_explorer.html">source</a>.</p>
+      <p>Explore the <a target="_blank" href=${source_explorer.$dist_path}>source</a>.</p>
       <p>See the <a href="http://rez-lang.com/" target="_blank">online documentation</a> for more information.</p>
     </div>
   </section>

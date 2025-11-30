@@ -9,25 +9,82 @@
 -- code formatted (monospace font etc…) All of the required content is packed
 -- into source_explorer.html which is automatically added to the game assets
 
-function get_asset_file_name(compilation, asset_id)
-  asset = rez.compilation.get_content_with_id(compilation, asset_id)
-  return rez.node.get_attr_value(asset, "file_name")
+function get_asset_dist_path(compilation, asset_id)
+  local asset = rez.compilation.get_content_with_id(compilation, asset_id)
+  return rez.node.get_attr_value(asset, "$dist_path")
+end
+
+-- Compute relative path from a directory to a file path
+function relative_path(from_dir, to_path)
+  local function split_path(path)
+    local parts = {}
+    local start = 1
+    while true do
+      local pos = path:find("/", start, true)
+      if pos then
+        if pos > start then
+          table.insert(parts, path:sub(start, pos - 1))
+        end
+        start = pos + 1
+      else
+        if start <= #path then
+          table.insert(parts, path:sub(start))
+        end
+        break
+      end
+    end
+    return parts
+  end
+
+  local from_parts = split_path(from_dir)
+  local to_parts = split_path(to_path)
+
+  -- Find common prefix length
+  local common = 0
+  for i = 1, math.min(#from_parts, #to_parts) do
+    if from_parts[i] == to_parts[i] then
+      common = i
+    else
+      break
+    end
+  end
+
+  local result = {}
+
+  -- Go up from from_dir to common ancestor
+  for i = common + 1, #from_parts do
+    table.insert(result, "..")
+  end
+
+  -- Go down to target
+  for i = common + 1, #to_parts do
+    table.insert(result, to_parts[i])
+  end
+
+  return table.concat(result, "/")
 end
 
 function read_sources(compilation)
   local sources = {}
   local source_paths = rez.compilation.source_paths(compilation)
+  local cwd = rez.plugin.cwd()
+  local prefix = cwd .. "/"
 
   for i, source_path in ipairs(source_paths) do
-    local ok, content = rez.plugin.read_file(source_path)
+    local content, err = rez.plugin.read_file(source_path)
 
-    if ok then
+    if content then
       local source = {}
-      source["path"] = source_path
+      -- Strip the project root to get relative path
+      if source_path:sub(1, #prefix) == prefix then
+        source["path"] = source_path:sub(#prefix + 1)
+      else
+        source["path"] = source_path
+      end
       source["content"] = content
       sources[i] = source
     else
-      print("Unable to read: " .. source_path)
+      print("Unable to read: " .. source_path .. " - " .. (err or "unknown error"))
     end
   end
 
@@ -265,20 +322,22 @@ function sourceExplorer() {
 end
 
 do
-  bulma_file = get_asset_file_name(compilation, "_BULMA_CSS")
-  -- "bulma.min.css"
-  alpine_file = get_asset_file_name(compilation, "_ALPINE_JS")
-  -- "alpinejs.min.js"
+  local source_explorer_folder = "assets/source_explorer"
+
+  -- Get asset dist paths and compute relative paths from source_explorer folder
+  local bulma_dist_path = get_asset_dist_path(compilation, "_BULMA_CSS")
+  local alpine_dist_path = get_asset_dist_path(compilation, "_ALPINE_JS")
+  local bulma_rel_path = relative_path(source_explorer_folder, bulma_dist_path)
+  local alpine_rel_path = relative_path(source_explorer_folder, alpine_dist_path)
 
   -- Read each source file into a string
   local sources = read_sources(compilation)
   local main_source_path = rez.compilation.main_source_path(compilation)
 
-  local source_explorer_folder = "assets/source_explorer"
   rez.plugin.mkdir(source_explorer_folder)
 
   local source_explorer_path = source_explorer_folder .. "/source_explorer.html"
-  local html = generate_source_explorer(sources, bulma_file, alpine_file, main_source_path)
+  local html = generate_source_explorer(sources, bulma_rel_path, alpine_rel_path, main_source_path)
 
   rez.plugin.write_file(source_explorer_path, html)
 

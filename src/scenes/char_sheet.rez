@@ -1,0 +1,36 @@
+@keybinding shift+C :show_character_sheet
+
+@game {
+  on_show_character_sheet: () => {
+    console.log("Run show_character_sheet event handler!");
+    if($game.current_scene_id === "sc_char_sheet") {
+      return RezEvent.sceneResume();
+    } else {
+      return RezEvent.sceneInterlude("sc_char_sheet");
+    }
+  }
+}
+
+@scene sc_char_sheet {
+  initial_card_id: #c_char_sheet
+  bindings: [
+    player: #player
+  ]
+}
+
+@card c_char_sheet {
+  content: ```
+  <div>Character Sheet</div>
+  <div class="columns">
+    <div class="column is-one-fifth">
+      <div>Name</div>
+      <div>${player.name}</div>
+      <div>Credits</div>
+      <div>${player.credits}</div>
+    </div>
+    <div class="column">
+      ${content}
+    </div>
+  </div>
+  ```
+}

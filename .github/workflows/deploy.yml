@@ -56,7 +56,7 @@ jobs:
           fi
 
           echo "Build output:"
-          ls -la dist/
+          ls -lR dist/
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main'

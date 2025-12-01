@@ -7,7 +7,7 @@
 
 %(../lib/stdlib.rez)
 
-@const build = 1
+@const build = 2
 
 @asset _ALPINE_JS {
   $built_in: true
@@ -34,7 +34,11 @@
   file_name: "tippy.min.js"
 }
 
+%(components.rez)
+
 @pragma(after_process_ast) source_explorer
+
+@pragma(after_process_ast) icons("assets/img/icons")
 
 @keybinding Escape :end_interlude
 
@@ -51,13 +55,22 @@
   version: "1.0"
   created: "2025-11-25 14:30:21.191257Z"
 
-  initial_scene_id: #sc_main
+  initial_scene_id: #sc_intro
+
+  bindings: [
+    source_explorer: #asset_source_explorer_html
+  ]
 
   layout: ```
   <!-- Main Content -->
   <section class="main-content is-fullheight">
     <div class="container">${content}</div>
   </section>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>Explore the <a target="_blank" href=${source_explorer.$dist_path}>source</a>.</p>
+    </div>
+  </footer>
   <!-- End -->
   ```
 
@@ -76,26 +89,3 @@
 
 %(scenes.rez)
 %(player.rez)
-
-@scene sc_main {
-  initial_card_id: #c_intro
-}
-
-@card c_intro {
-  bindings: [
-    source_explorer: #asset_source_explorer_html
-  ]
-  content: ```
-  <section class="hero">
-    <div class="hero-body">
-      <p class="title">${card.game.title} ${$build}</p>
-      <p class="subtitle">From <span class="has-text-primary">${card.game.author}</span></p>
-    </div>
-    <div class="box">
-      <p>Start adding your content…</p>
-      <p>Explore the <a target="_blank" href=${source_explorer.$dist_path}>source</a>.</p>
-      <p>See the <a href="http://rez-lang.com/" target="_blank">online documentation</a> for more information.</p>
-    </div>
-  </section>
-  ```
-}

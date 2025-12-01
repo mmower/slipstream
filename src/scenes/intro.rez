@@ -1,0 +1,66 @@
+@scene sc_intro {
+  initial_card_id: #c_intro
+}
+
+@card c_intro {
+  bindings: [
+    player: #player
+  ]
+  content: ```
+  <section class="hero">
+    <div class="hero-body">
+      <p class="title">${card.game.title} B${$build}</p>
+      <p class="subtitle">From <span class="has-text-primary">${card.game.author}</span></p>
+    </div>
+    <div class="box">
+      <form name="name_form" class="form" rez-live>
+        <h4 class="title is-4">Character Name</h4>
+        <div class="field">
+          <label class="label">First Name</label>
+          <div class="control has-icons-right">
+            <input class="input" type="text" name="first_name" rez-bind="player.first_name">
+            <span class="icon is-right">
+              <.icon icon="arrow_path" event="rand_first_name" />
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Family Name</label>
+          <div class="control has-icons-right">
+            <input class="input" type="text" name="family_name" rez-bind="player.family_name">
+            <span class="icon is-right">
+              <.icon icon="arrow_path" event="rand_family_name" />
+            </span>
+          </div>
+        </div>
+        <div class="control">
+          <button class="button is-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  ```
+
+  on_name_form: (x, y) => {
+    return RezEvent.playCard("c_intro_2");
+  }
+
+  on_rand_first_name: () => {
+    $player.first_name = $first_names.next();
+    return RezEvent.render();
+  }
+
+  on_rand_family_name: () => {
+    $player.family_name = $family_names.next();
+    return RezEvent.render();
+  }
+}
+
+@card c_intro_2 {
+  bindings: [
+    player: #player
+  ]
+  content: ```
+  <p>${player.name}</p>
+  ```
+}

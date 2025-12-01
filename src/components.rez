@@ -1,0 +1,41 @@
+@styles {
+  .heroicon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .control.has-icons-right .icon.is-right {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+}
+
+@component icon (bindings, assigns, content) => {
+  const icon_name = assigns["icon"];
+  if(icon_name === undefined) {
+    throw new Error("No icon attribute specified!");
+  }
+
+  const icon = $(`icon_${icon_name}`);
+  const event = assigns["event"];
+
+  if(event == undefined) {
+    return `<span class="heroicon">${icon.content}</span>`;
+  } else {
+    // When there is an event, process all other assigns as data attributes
+    let dataAttributes = '';
+
+    // Iterate through assigns and convert them to data attributes
+    // Skip the 'icon' and 'event' attributes as they're handled specially
+    for (const [key, value] of Object.entries(assigns)) {
+      if (key !== 'icon' && key !== 'event') {
+        dataAttributes += ` data-${key}="${value}"`;
+      }
+    }
+
+    // Create the anchor element with the event and all other data attributes
+    return `<span class="heroicon"><a data-event="${event}"${dataAttributes}>${icon.content}</a></span>`;
+  }
+}

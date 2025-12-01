@@ -234,13 +234,15 @@ function generate_source_explorer(sources, bulma_css_path, alpine_js_path, main_
     }
     .file-sidebar .menu-list a {
       padding: 0.5em 0.75em;
+      margin-bottom: 0.25em;
       border-radius: 4px;
-      color: #4a4a4a;
+      background-color: #2d2d2d;
+      color: #e0e0e0;
       font-size: 0.9rem;
     }
     .file-sidebar .menu-list a:hover {
-      background-color: #e8e8e8;
-      color: #363636;
+      background-color: #404040;
+      color: #ffffff;
     }
     .file-sidebar .menu-list a.is-active {
       background-color: #3273dc;

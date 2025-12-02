@@ -5,6 +5,7 @@
 @card c_intro {
   bindings: [
     player: #player
+    ship: #ship
   ]
   content: ```
   <section class="hero">
@@ -33,6 +34,15 @@
             </span>
           </div>
         </div>
+        <div class="field">
+          <label class="label">Ship Name</label>
+          <div class="control has-icons-right">
+            <input class="input" type="text" name="ship_name" rez-bind="ship.name">
+            <span class="icon is-right">
+              <.icon icon="arrow_path" event="rand_ship_name" />
+            </span>
+          </div>
+        </div>
         <div class="control">
           <button class="button is-primary">Submit</button>
         </div>
@@ -41,8 +51,8 @@
   </section>
   ```
 
-  on_name_form: (x, y) => {
-    return RezEvent.playCard("c_intro_2");
+  on_name_form: () => {
+    return RezEvent.sceneChange("sc_hangar");
   }
 
   on_rand_first_name: () => {
@@ -52,6 +62,11 @@
 
   on_rand_family_name: () => {
     $player.family_name = $family_names.next();
+    return RezEvent.render();
+  }
+
+  on_rand_ship_name: () => {
+    $ship.name = $ship_names.next();
     return RezEvent.render();
   }
 }

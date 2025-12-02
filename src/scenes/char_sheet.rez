@@ -15,21 +15,25 @@
   initial_card_id: #c_char_sheet
   bindings: [
     player: #player
+    ship: #ship
   ]
 }
 
 @card c_char_sheet {
   content: ```
-  <div>Character Sheet</div>
+
   <div class="columns">
-    <div class="column is-one-fifth">
+    <div class="column is-one-half">
+      <h4 class="title is-4">Character</h4>
       <div>Name</div>
       <div>${player.name}</div>
       <div>Credits</div>
       <div>${player.credits}</div>
     </div>
     <div class="column">
-      ${content}
+      <h4 class="title is-4">Ship</h4>
+      <div>Name</div>
+      <div>${ship.name}</div>
     </div>
   </div>
   ```

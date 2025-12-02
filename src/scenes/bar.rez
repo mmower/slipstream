@@ -1,0 +1,3 @@
+@scene sc_bar {
+  initial_card_id: #c_bar_1
+}

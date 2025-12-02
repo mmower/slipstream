@@ -1,0 +1,37 @@
+@scene sc_cockpit {
+  initial_card_id: #c_cockpit_1
+
+  blocks: [#c_cockpit_sidebar]
+
+  layout: ```
+  <div class="columns">
+    <div class="column is-one-quarter">
+      ${c_cockpit_sidebar}
+    </div>
+    <div class="column">
+      ${content}
+    </div>
+  </div>
+  ```
+}
+
+@card c_cockpit_sidebar {
+  bindings: [
+    player: #player
+    sector: player.sector
+  ]
+  content: ```
+  <div>
+    <.pb>Sector: ${sector.name}</.pb>
+  </div>
+  ```
+}
+
+@card c_cockpit_1 {
+  bindings: [
+    ship: #ship
+  ]
+  content: ```
+  <.pb>You are in the cockpit of ${ship.name}</.pb>
+  ```
+}

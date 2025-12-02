@@ -39,3 +39,7 @@
     return `<span class="heroicon"><a data-event="${event}"${dataAttributes}>${icon.content}</a></span>`;
   }
 }
+
+@component pb (bindings, assigns, content) => {
+  return `<p class="block">${content}</p>`;
+}

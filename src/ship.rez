@@ -1,0 +1,143 @@
+@actor ship {
+  $global: true
+
+  name: ^i{return $ship_names.next();}
+  container: #ship_inventory
+
+  hull_id: #hull_kx_40
+}
+
+%%
+%% The Player buys a Hull
+%%
+%% Hulls can be customised by the player
+%% The Millenium Falcon is a YT-1300 freighter with significant modifications
+%% we should allow players to really customise a ship to meet their own
+%% imagined needs
+%%
+
+
+@derive :ship_module :item
+
+@derive :cargo_module :ship_module
+@derive :sensor_package :ship_module
+
+@derive :manoeuvre_drive :ship_module
+@derive :jump_drive :ship_module
+
+@derive :computer :ship_module
+
+
+@inventory ship_inventory {
+  slots: #{#sl_cargo_bay #sl_sensor_package}
+}
+
+@slot sl_cargo_bay {
+  accepts: :cargo_module
+  accessor: :cargo_bay
+  capacity: 1
+}
+
+@slot sl_sensor_package {
+  accepts: :sensor_package
+  accessor: :sensors
+}
+
+@list ship_names {
+  $global: true
+
+  next: function() {
+    return this.randomFromBag("player_ship");
+  }
+
+  values: [
+    "Shadow Rider"
+    "Eclipse Warden"
+    "Astral Nomad"
+    "Radiant Horizon"
+    "Nova Tracer"
+    "Harbinger’s Wake"
+    "Ion Tempest"
+    "Twin Suns Ranger"
+    "Crimson Dusk"
+    "Vengeful Star"
+    "Iron Spectre"
+    "Starward Oath"
+    "Nebula Dancer"
+    "Dread Horizon"
+    "Astral Reaver"
+    "Bitter Fortune"
+    "Dark Solace"
+    "Hollow Sun"
+    "Last Gambit"
+    "Outer Reach"
+    "Twilight Dancer"
+    "Vex Ascendant"
+    "Yorren's Blade"
+    "Arc Runner"
+    "Corsair's Pride"
+    "Eclipse Chaser"
+    "Fury Bound"
+    "Hellion"
+    "Javelin"
+    "Lone Vigil"
+    "Maruader"
+    "Null Star"
+    "Outrider's Gamble"
+    "Pilgrim"
+    "Quarren's Folly"
+    "Null Star"
+    "Scythe"
+    "Wildcard"
+    "Xandor's Folly"
+    "Yearning Star"
+    "Zephyr Wing"
+    "Ashen Glory"
+    "Banshee"
+    "Crucible"
+    "Defiant"
+    "Endurance"
+    "Firebrand"
+    "Grim Venture"
+    "Nomad"
+    "Predator"
+    "Sovereign"
+    "Windfall"
+    "Lucky Guess"
+    "Long Shot"
+    "Final Offer"
+    "Last Resort"
+    "Spite"
+    "Fool's Errand"
+    "Reckless"
+    "Malice"
+    "Sundog"
+    "Lost Cause"
+    "Verdict"
+    "Shrike"
+    "Hazard Pay"
+    "Wayfarer"
+    "Redoubt"
+    "Osprey"
+    "Gambit"
+    "Collateral Damage"
+    "Drifter"
+    "Mandate"
+    "Hidden Sanction"
+    "Prodigal Sun"
+    "Unexpected Ransom"
+    "Silver Covenant"
+    "Happy Windfall"
+    "Expedient Measures"
+    "Sudden Repreive"
+  ]
+}
+
+@elem hull = object
+
+@hull hull_kx_40 {
+  manufacturer: "Kondine Heavy Industries"
+  designation: "KX-40"
+  mass: 15000
+  purpose: "Cargo Hauler"
+}

@@ -1,0 +1,8 @@
+
+
+@elem sector = object
+
+@sector tarsus_sector {
+  name: "Tarsus"
+  danger: 2
+}

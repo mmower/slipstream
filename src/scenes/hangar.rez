@@ -1,0 +1,17 @@
+@scene sc_hangar {
+  initial_card_id: #c_hangar_1
+}
+
+@card c_hangar_1 {
+  bindings: [
+    ship: #ship
+  ]
+
+  content: ```
+  <.pb>You are in the hangar</.pb>
+
+  <ul class="list">
+    <li><a scene="sc_cockpit">Board the ${ship.name}</a></li>
+  </ul>
+  ```
+}

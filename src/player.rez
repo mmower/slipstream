@@ -11,6 +11,8 @@
   combat_skill: 1
   trade_skill: 1
   explorer_skill: 1
+
+  sector_id: #tarsus_sector
 }
 
 @list first_names {

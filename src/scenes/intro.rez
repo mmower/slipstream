@@ -15,7 +15,18 @@
     </div>
     <div class="box">
       <form name="name_form" class="form" rez-live>
-        <h4 class="title is-4">Character Name</h4>
+        <h4 class="title is-4">Character</h4>
+        <div class="field">
+          <label class="label">Gender</label>
+          <div class="control">
+            <label class="radio">
+              <input type="radio" name="gender" value="m" rez-bind="player.gender" rez-live> Male
+            </label>
+            <label class="radio">
+              <input type="radio" name="gender" value="f" rez-bind="player.gender" rez-live> Female
+            </label>
+          </div>
+        </div>
         <div class="field">
           <label class="label">First Name</label>
           <div class="control has-icons-right">
@@ -34,7 +45,7 @@
             </span>
           </div>
         </div>
-        <div class="field">
+        <!--div class="field">
           <label class="label">Ship Name</label>
           <div class="control has-icons-right">
             <input class="input" type="text" name="ship_name" rez-bind="ship.name">
@@ -42,9 +53,9 @@
               <.icon icon="arrow_path" event="rand_ship_name" />
             </span>
           </div>
-        </div>
+        </div-->
         <div class="control">
-          <button class="button is-primary">Submit</button>
+          <button class="button is-primary">Start Your Journey</button>
         </div>
       </form>
     </div>
@@ -52,11 +63,20 @@
   ```
 
   on_name_form: () => {
-    return RezEvent.sceneChange("sc_hangar");
+    return RezEvent.playCard("c_intro_2");
+  }
+
+  on_input: (card, evt) => {
+    if(evt.evt.target.name == "gender") {
+      $player.first_name = $player.random_first_name();
+      return RezEvent.render();
+    } else {
+      return RezEvent.noop();
+    }
   }
 
   on_rand_first_name: () => {
-    $player.first_name = $first_names.next();
+    $player.first_name = $player.random_first_name();
     return RezEvent.render();
   }
 
@@ -74,8 +94,26 @@
 @card c_intro_2 {
   bindings: [
     player: #player
+    friend: #npc_friend_1
   ]
   content: ```
-  <p>${player.name}</p>
+  <.pb>Your com-terminal beeps, waking you from a fitful sleep.</.pb>
+  <.pb>It announces an incoming call from ${friend.name}, a former ship mate on the cruiser Pirvax.</.pb>
+  <.pb>You haven't spoken to them since they mustered out of the Navy a year ahead of you.</.pb>
+  <.pb>You <a card="c_intro_3">reach across</a> to open the connection.</.pb>
+  ```
+}
+
+@card c_intro_3 {
+  bindings: [
+    player: #player
+    friend: #npc_friend_1
+  ]
+
+  content: ```
+  <.dialog char={friend}>Hey ${player.first_name}, did I wake you?</.dialog>
+  <.dialog char={player}>It's okay, good to hear from you. Sup?</.dialog>
+  <.dialog char={friend}>I just heard you mustered out, if you don't have anything going yet I could really use some help.</.dialog>
+  <.dialog char={player}>Tell me more</.dialog>
   ```
 }

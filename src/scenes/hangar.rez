@@ -12,6 +12,7 @@
 
   <ul class="list">
     <li><a scene="sc_cockpit">Board the ${ship.name}</a></li>
+    <li><a card="c_hanger_refuel">Refuel</a></li>
   </ul>
   ```
 }

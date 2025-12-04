@@ -89,5 +89,6 @@
 
 %(scenes.rez)
 %(player.rez)
+%(npcs.rez)
 %(ship.rez)
 %(sectors.rez)

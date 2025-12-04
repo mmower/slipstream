@@ -43,3 +43,38 @@
 @component pb (bindings, assigns, content) => {
   return `<p class="block">${content}</p>`;
 }
+
+%% Styling and general components
+
+@styles {
+  .dialog-box {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .speaker-name {
+    display: inline-block;
+    background: #485fc7;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
+  }
+
+  .dialog-content {
+    background: #f5f5f5;
+    border: 1px solid #dbdbdb;
+    border-radius: 0 4px 4px 4px;
+    padding: 1.25rem;
+    color: #000000;
+  }
+}
+
+@component dialog (bindings, assigns, content) => {
+  console.dir(assigns);
+  const char = assigns["char"];
+  const tag = char.dialog_tag ? ` (${char.dialog_tag})` : "";
+  const color = char.dialog_color || "#485fc7";
+  const name = (assigns["first"] || false) ? char.name : char.first_name;
+  return `<div class="dialog-box"><p class="speaker-name is-size-5" style="background: ${color}">${name}${tag}</p><div class="dialog-content">${content}</div></div>`;
+}

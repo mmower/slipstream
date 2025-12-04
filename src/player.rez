@@ -1,11 +1,28 @@
-@actor player {
+
+@elem npc = actor
+
+@defaults npc {
+  gender: :m
+  first_name: ^i:2{return this.random_first_name();}
+  family_name: ^i:2{return $family_names.next();}
+  name: ^p{return `${this.first_name} ${this.family_name}`;}
+  dialog_tag: "You"
+
+  random_first_name: function() {
+    if(this.gender == "m") {
+      return $male_first_names.next();
+    } else {
+      return $female_first_names.next();
+    }
+  }
+}
+
+@npc player {
   $global: true
 
-  first_name: ^i{return $first_names.next();}
-  family_name: ^i{return $family_names.next();}
-  name: ^p{return `${this.first_name} ${this.family_name}`;}
-
   credits: 2000
+
+  gender: :m
 
   pilot_skill: 1
   combat_skill: 1
@@ -15,7 +32,7 @@
   sector_id: #tarsus_sector
 }
 
-@list first_names {
+@list male_first_names {
   $global: true
 
   on_init: (list) => {
@@ -23,25 +40,47 @@
   }
 
   next: function() {
-    return this.randomWithoutStarvation();
+    return this.randomFromBag();
   }
 
   values: [
-    "Kael", "Zira", "Torin", "Vex", "Mira", "Jace", "Seren", "Dax", "Lyra", "Caius",
-    "Nyx", "Thane", "Vessa", "Zev", "Alara", "Renn", "Cira", "Borin", "Talia", "Kiran",
-    "Vorn", "Nessa", "Drex", "Elara", "Joren", "Zaya", "Kal", "Talon", "Sira", "Vance",
-    "Nira", "Caden", "Kyra", "Jex", "Lira", "Zander", "Tira", "Rax", "Maren", "Doran",
-    "Vela", "Kessa", "Sev", "Alena", "Bryn", "Corva", "Eira", "Fenn", "Galen", "Hira",
-    "Isen", "Jara", "Lorren", "Marek", "Oryn", "Quell", "Rava", "Solan", "Taren", "Varen",
-    "Wren", "Xara", "Yoren", "Zara", "Aran", "Bex", "Dorin", "Falken", "Grenn", "Halen",
-    "Jynn", "Kova", "Lorn", "Nev", "Orin", "Prynn", "Qira", "Ryla", "Tavos", "Ulen",
-    "Wylan", "Xev", "Yara", "Arik", "Bren", "Cael", "Dara", "Ezrik", "Fennix", "Gavos",
-    "Hux", "Ixel", "Jareth", "Korath", "Lev", "Myra", "Norin", "Pyra", "Senna", "Tyrell"
+    "Kael", "Torin", "Vex", "Jace", "Seren", "Dax", "Caius", "Thane", "Zev",
+    "Renn", "Kiran", "Borin", "Vorn", "Drex", "Joren", "Kal", "Talon", "Vance",
+    "Caden", "Jex", "Zander", "Rax", "Doran", "Bryn", "Sev", "Fenn", "Galen",
+    "Isen", "Lorren", "Marek", "Oryn", "Quell", "Solan", "Taren", "Varen",
+    "Yoren", "Aran", "Bex", "Dorin", "Falken", "Grenn", "Halen", "Jynn",
+    "Lorn", "Nev", "Orin", "Prynn", "Tavos", "Ulen", "Wylan", "Xev", "Arik",
+    "Bren", "Cael", "Ezrik", "Fennix", "Gavos", "Hux", "Ixel", "Jareth",
+    "Korath", "Lev", "Norin", "Tyrell"
+  ]
+}
+
+@list female_first_names {
+  $global: true
+
+  on_init: (list) => {
+    list.warmStarvationPool();
+  }
+
+  next: function() {
+    return this.randomFromBag();
+  }
+
+  values: [
+    "Kael", "Zira", "Mira", "Seren", "Lyra", "Nyx", "Vessa", "Renn", "Alara",
+    "Cira", "Talia", "Kiran", "Nessa", "Elara", "Zaya", "Sira", "Nira", "Kyra",
+    "Lira", "Tira", "Maren", "Vela", "Kessa", "Bryn", "Corva", "Eira", "Hira",
+    "Jara", "Rava", "Wren", "Xara", "Zara", "Jynn", "Kova", "Qira", "Ryla",
+    "Yara", "Dara", "Myra", "Pyra", "Prynn", "Senna", "Ixel"
   ]
 }
 
 @list family_names {
   $global: true
+
+  on_init: (list) => {
+    list.warmStarvationPool();
+  }
 
   next: function() {
     return this.randomFromBag();

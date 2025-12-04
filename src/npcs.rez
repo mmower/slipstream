@@ -1,0 +1,5 @@
+%% Named non-player characters that the player can interact with
+
+@npc npc_friend_1 {
+  dialog_tag: "Friend"
+}

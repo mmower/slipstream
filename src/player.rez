@@ -20,7 +20,7 @@
 @npc player {
   $global: true
 
-  credits: 2000
+  money: 2150
 
   gender: :m
 

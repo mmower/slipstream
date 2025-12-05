@@ -1,5 +1,9 @@
 @scene sc_intro {
   initial_card_id: #c_intro
+
+  layout: ```
+  <div class="container">${content}</div>
+  ```
 }
 
 @card c_intro {
@@ -13,53 +17,53 @@
       <p class="title">${card.game.title} B${$build}</p>
       <p class="subtitle">From <span class="has-text-primary">${card.game.author}</span></p>
     </div>
-    <div class="box">
-      <form name="name_form" class="form" rez-live>
-        <h4 class="title is-4">Character</h4>
-        <div class="field">
-          <label class="label">Gender</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="gender" value="m" rez-bind="player.gender" rez-live> Male
-            </label>
-            <label class="radio">
-              <input type="radio" name="gender" value="f" rez-bind="player.gender" rez-live> Female
-            </label>
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">First Name</label>
-          <div class="control has-icons-right">
-            <input class="input" type="text" name="first_name" rez-bind="player.first_name">
-            <span class="icon is-right">
-              <.icon icon="arrow_path" event="rand_first_name" />
-            </span>
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Family Name</label>
-          <div class="control has-icons-right">
-            <input class="input" type="text" name="family_name" rez-bind="player.family_name">
-            <span class="icon is-right">
-              <.icon icon="arrow_path" event="rand_family_name" />
-            </span>
-          </div>
-        </div>
-        <!--div class="field">
-          <label class="label">Ship Name</label>
-          <div class="control has-icons-right">
-            <input class="input" type="text" name="ship_name" rez-bind="ship.name">
-            <span class="icon is-right">
-              <.icon icon="arrow_path" event="rand_ship_name" />
-            </span>
-          </div>
-        </div-->
-        <div class="control">
-          <button class="button is-primary">Start Your Journey</button>
-        </div>
-      </form>
-    </div>
   </section>
+  <div class="box">
+    <form name="name_form" class="form" rez-live>
+      <h4 class="title is-4">Character</h4>
+      <div class="field">
+        <label class="label">Gender</label>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" name="gender" value="m" rez-bind="player.gender" rez-live> Male
+          </label>
+          <label class="radio">
+            <input type="radio" name="gender" value="f" rez-bind="player.gender" rez-live> Female
+          </label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">First Name</label>
+        <div class="control has-icons-right">
+          <input class="input" type="text" name="first_name" rez-bind="player.first_name">
+          <span class="icon is-right">
+            <.icon icon="arrow_path" event="rand_first_name" />
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Family Name</label>
+        <div class="control has-icons-right">
+          <input class="input" type="text" name="family_name" rez-bind="player.family_name">
+          <span class="icon is-right">
+            <.icon icon="arrow_path" event="rand_family_name" />
+          </span>
+        </div>
+      </div>
+      <!--div class="field">
+        <label class="label">Ship Name</label>
+        <div class="control has-icons-right">
+          <input class="input" type="text" name="ship_name" rez-bind="ship.name">
+          <span class="icon is-right">
+            <.icon icon="arrow_path" event="rand_ship_name" />
+          </span>
+        </div>
+      </div-->
+      <div class="control">
+        <button class="button is-primary">Start Your Journey</button>
+      </div>
+    </form>
+  </div>
   ```
 
   on_name_form: () => {
@@ -97,10 +101,12 @@
     friend: #npc_friend_1
   ]
   content: ```
-  <.pb>Your com-terminal beeps, waking you from a fitful sleep.</.pb>
-  <.pb>It announces an incoming call from ${friend.name}, a former ship mate on the cruiser Pirvax.</.pb>
-  <.pb>You haven't spoken to them since they mustered out of the Navy a year ahead of you.</.pb>
-  <.pb>You <a card="c_intro_3">reach across</a> to open the connection.</.pb>
+  <div class="box">
+    <.pb>Your com-terminal beeps, waking you from a fitful sleep.</.pb>
+    <.pb>It announces an incoming call from ${friend.name}, a former ship mate of yours in the Navy.</.pb>
+    <.pb>You haven't spoken to them since they mustered out a year ahead of you.</.pb>
+    <.pb>You <a card="c_intro_3">reach across</a> to open the connection.</.pb>
+  </div>
   ```
 }
 
@@ -111,9 +117,39 @@
   ]
 
   content: ```
-  <.dialog char={friend}>Hey ${player.first_name}, did I wake you?</.dialog>
-  <.dialog char={player}>It's okay, good to hear from you. Sup?</.dialog>
-  <.dialog char={friend}>I just heard you mustered out, if you don't have anything going yet I could really use some help.</.dialog>
-  <.dialog char={player}>Tell me more</.dialog>
+  <div class="box">
+    <.dialog char={friend}>Hey ${player.first_name}, did I wake you?</.dialog>
+    <.pb>You wonder if you look at weary as you feel.</.pb>
+    <.dialog char={player}>It's okay, good to hear from you. It's been a long time.</.dialog>
+    <.pb>${friend.first_name} look a little pensive, like there is something on their mind.</.pb>
+    <.dialog char={friend}>I heard you mustered out, you have anything setup yet?</.dialog>
+    <.pb>You think about the <.money amount=5000 /> you received when you left the Navy and the barely more than <.money amount={player.money} /> left in your account.</.pb>
+    <.dialog char={player}><a card="c_intro_4">Tell me more</a></.dialog>
+  </div>
+  ```
+}
+
+@card c_intro_4 {
+  bindings: [
+    player: #player
+    friend: #npc_friend_1
+    ship: #ship_one
+  ]
+
+  content: ```
+  <div class="box">
+    <.pb>${friend.first_name} relaxes a little, seeming relieved you're willing to listen.</.pb>
+    <.dialog char={friend}>I've been doing some contract work, courier runs mostly. Got a sweet little ship docked at your station—berth C-7. She's called the <em>${ship.name}</em>.</.dialog>
+    <.pb>You notice their expression cloud over slightly.</.pb>
+    <.dialog char={friend}>Thing is, my regular pilot got poached by another outfit. Left me stranded here with a ship sitting idle three sectors away.</.dialog>
+    <.pb>You're starting to see where this is going.</.pb>
+    <.dialog char={player}>And you need someone to bring her back to you.</.dialog>
+    <.dialog char={friend}>Someone I can trust. Someone who knows how to fly and won't ask too many questions about the cargo manifests.</.dialog>
+    <.pb>They pause, then name their price.</.pb>
+    <.dialog char={friend}><.money amount=2000 /> on delivery, plus you keep whatever you make running cargo on the way. Could take a few weeks depending on how you play it.</.dialog>
+    <.pb>Two thousand credits would more than double what you have left. And having a ship under you again, even temporarily...</.pb>
+    <.dialog char={friend}>What do you say, ${player.first_name}? Help out an old friend?</.dialog>
+    <.pb><a card="c_intro_5">Accept the offer</a></.pb>
+  </div>
   ```
 }

@@ -78,3 +78,9 @@
   const name = (assigns["first"] || false) ? char.name : char.first_name;
   return `<div class="dialog-box"><p class="speaker-name is-size-5" style="background: ${color}">${name}${tag}</p><div class="dialog-content">${content}</div></div>`;
 }
+
+@component money (bindings, assigns, content) => {
+  //¤⟡;
+  const amount = assigns["amount"];
+  return `✦${amount}`;
+}

@@ -28,7 +28,7 @@
       <div>Name</div>
       <div>${player.name}</div>
       <div>Credits</div>
-      <div>${player.credits}</div>
+      <div>${player.money}</div>
     </div>
     <div class="column">
       <h4 class="title is-4">Ship</h4>

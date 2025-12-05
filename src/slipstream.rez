@@ -7,7 +7,9 @@
 
 %(../lib/stdlib.rez)
 
-@const build = 2
+@const build = 3
+
+@const CUR_SYM = "¤"
 
 @asset _ALPINE_JS {
   $built_in: true
@@ -92,3 +94,4 @@
 %(npcs.rez)
 %(ship.rez)
 %(sectors.rez)
+%(factions.rez)

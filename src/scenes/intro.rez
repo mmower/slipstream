@@ -118,6 +118,27 @@
   }
 }
 
+@component assign_points_button (bindings, assigns, content) => {
+  const {char, stat, avail, dir} = assigns;
+
+  const value = char[stat];
+  let enabled = false;
+  let event;
+  if(dir === "-" && value > 1) {
+    event = "dec_stat";
+    enabled = true;
+  } else if(dir === "+" && value < 3 && avail > 0) {
+    event = "inc_stat"
+    enabled = true;
+  }
+
+  if(enabled) {
+    return `<a class="button" data-event="${event}" data-stat="${stat}">${dir}</a>`;
+  } else {
+    return `<a class="button" disabled>${dir}</a>`;
+  }
+}
+
 @card c_intro_stats {
   bindings: [
     player: #player
@@ -145,7 +166,7 @@
   content: ```
   <div class="box">
     <h4 class="title is-4">Allocate Stats</h4>
-    <p class="block">Distribute <strong>${card.total_points}</strong> points across your five stats. Each stat must be between ${card.min_stat} and ${card.max_stat}.</p>
+    <p class="block">Distribute <strong>${card.points_available}</strong> points across your five stats. Each stat must be between ${card.min_stat} and ${card.max_stat}.</p>
     <p class="block has-text-weight-semibold">Points remaining: <span class="${card.points_remaining === 0 ? 'has-text-success' : 'has-text-warning'}">${card.points_remaining}</span></p>
 
     <div class="field is-horizontal">
@@ -155,13 +176,13 @@
       <div class="field-body">
         <div class="field has-addons">
           <p class="control">
-            <a class="button" data-event="decr_stat" data-stat="edge" ${player.edge | min_disable}>−</a>
+            <.assign_points_button char={player} stat="edge" avail={card.points_used} dir="-" />
           </p>
           <p class="control">
             <span class="button is-static" style="width: 3rem;">${player.edge}</span>
           </p>
           <p class="control">
-            <a class="button" data-event="incr_stat" data-stat="edge" ${player.edge | max_disable: card.points_remaining}>+</a>
+            <.assign_points_button char={player} stat="edge" avail={card.points_used} dir="+" />
           </p>
         </div>
         <p class="help is-inline ml-3" style="align-self: center;">Quickness, agility, prowess in ranged combat</p>
@@ -175,13 +196,13 @@
       <div class="field-body">
         <div class="field has-addons">
           <p class="control">
-            <a class="button" data-event="decr_stat" data-stat="heart" ${player.heart | min_disable}>−</a>
+            <.assign_points_button char={player} stat="heart" avail={card.points_used} dir="-" />
           </p>
           <p class="control">
             <span class="button is-static" style="width: 3rem;">${player.heart}</span>
           </p>
           <p class="control">
-            <a class="button" data-event="incr_stat" data-stat="heart" ${player.heart | max_disable}>+</a>
+            <.assign_points_button char={player} stat="heart" avail={card.points_used} dir="+" />
           </p>
         </div>
         <p class="help is-inline ml-3" style="align-self: center;">Courage, willpower, empathy, sociability</p>
@@ -195,13 +216,13 @@
       <div class="field-body">
         <div class="field has-addons">
           <p class="control">
-            <a class="button" data-event="decr_stat" data-stat="iron" ${player.iron | min_disable}>−</a>
+            <.assign_points_button char={player} stat="iron" avail={card.points_used} dir="-" />
           </p>
           <p class="control">
             <span class="button is-static" style="width: 3rem;">${player.iron}</span>
           </p>
           <p class="control">
-            <a class="button" data-event="incr_stat" data-stat="iron" ${player.iron | max_disable}>+</a>
+            <.assign_points_button char={player} stat="iron" avail={card.points_used} dir="+" />
           </p>
         </div>
         <p class="help is-inline ml-3" style="align-self: center;">Physical strength, endurance, close combat</p>
@@ -215,13 +236,13 @@
       <div class="field-body">
         <div class="field has-addons">
           <p class="control">
-            <a class="button" data-event="decr_stat" data-stat="shadow" ${player.shadow | min_disable}>−</a>
+            <.assign_points_button char={player} stat="shadow" avail={card.points_used} dir="-" />
           </p>
           <p class="control">
             <span class="button is-static" style="width: 3rem;">${player.shadow}</span>
           </p>
           <p class="control">
-            <a class="button" data-event="incr_stat" data-stat="shadow" ${player.shadow | max_disable}>+</a>
+            <.assign_points_button char={player} stat="shadow" avail={card.points_used} dir="+" />
           </p>
         </div>
         <p class="help is-inline ml-3" style="align-self: center;">Stealth, deception, cunning</p>
@@ -235,13 +256,13 @@
       <div class="field-body">
         <div class="field has-addons">
           <p class="control">
-            <a class="button" data-event="decr_stat" data-stat="wits" ${player.wits | min_disable}>−</a>
+            <.assign_points_button char={player} stat="wits" avail={card.points_used} dir="-" />
           </p>
           <p class="control">
             <span class="button is-static" style="width: 3rem;">${player.wits}</span>
           </p>
           <p class="control">
-            <a class="button" data-event="incr_stat" data-stat="wits" ${player.wits | max_disable}>+</a>
+            <.assign_points_button char={player} stat="wits" avail={card.points_used} dir="+" />
           </p>
         </div>
         <p class="help is-inline ml-3" style="align-self: center;">Intelligence, perception, technical skill</p>
@@ -261,7 +282,7 @@
   </div>
   ```
 
-  on_incr_stat: (card, evt) => {
+  on_inc_stat: (card, evt) => {
     const stat = evt.stat;
     const current = $player[stat];
     if(current < card.max_stat && card.points_available > 0) {
@@ -271,7 +292,7 @@
     return RezEvent.render();
   }
 
-  on_decr_stat: (card, evt) => {
+  on_dec_stat: (card, evt) => {
     const stat = evt.stat;
     const current = $player[stat];
     if(current > 1) {

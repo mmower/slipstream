@@ -2,7 +2,7 @@
   $global: true
 
   name: ^i{return $ship_names.next();}
-  container: #ship_inventory
+  container: ^c:#T_ship_inventory
 
   hull_id: #hull_kx_40
 }
@@ -22,19 +22,38 @@
 %%
 
 
+%% All ship modules derive from this
 @derive :ship_module :item
 
+%% Cargo modules come in various sizes and can be concealed
 @derive :cargo_module :ship_module
+
+%% Sensors detect other ships
 @derive :sensor_package :ship_module
 
+%% The computer (used for astrogration)
+@derive :ship_brain :ship_module
+
+%% For moving in-system
 @derive :manoeuvre_drive :ship_module
+
+%% For making Slipstream jumps
 @derive :jump_drive :ship_module
 
-@derive :computer :ship_module
+%% Hardpoint items are externally mounted weapons
+@derive :hardpoint :ship_module
+
+%% Power generators
+@derive :power_plant :ship_module
 
 
-@inventory ship_inventory {
-  slots: #{#sl_cargo_bay #sl_sensor_package}
+@inventory T_ship_inventory {
+  $template: true
+
+  slots: #{
+    #sl_cargo_bay
+    #sl_sensor_package
+  }
 }
 
 @slot sl_cargo_bay {

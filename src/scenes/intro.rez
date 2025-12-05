@@ -60,15 +60,16 @@
         </div>
       </div-->
       <div class="control">
-        <button class="button is-primary">Start Your Journey</button>
+        <a card="c_intro_stats">Start Your Journey</a>
+        <!--button class="button is-primary">Start Your Journey</button-->
       </div>
     </form>
   </div>
   ```
 
-  on_name_form: () => {
-    return RezEvent.playCard("c_intro_2");
-  }
+  %% on_name_form: () => {
+  %%   return RezEvent.playCard("c_intro_stats");
+  %% }
 
   on_input: (card, evt) => {
     if(evt.evt.target.name == "gender") {
@@ -91,6 +92,192 @@
 
   on_rand_ship_name: () => {
     $ship.name = $ship_names.next();
+    return RezEvent.render();
+  }
+}
+
+@filter FILTER_MIN_DISABLE {
+  name: "min_disable"
+  impl: (v1) => {
+    if(v1 < 2) {
+      return "disabled";
+    } else {
+      return "";
+    }
+  }
+}
+
+@filter FILTER_MAX_DISABLE {
+  name: "max_disable"
+  impl: (v1, v2) => {
+    if(v1 == 3 || v2 == 0) {
+      return "disabled";
+    } else {
+      return "";
+    }
+  }
+}
+
+@card c_intro_stats {
+  bindings: [
+    player: #player
+  ]
+
+  points_available: 4
+
+  edge: 1
+  heart: 1
+  iron: 1
+  shadow: 1
+  wits: 1
+
+  min_stat: 1
+  max_stat: 3
+
+  points_used: ^p{
+    return this.edge + this.heart + this.iron + this.shadow + this.wits;
+  }
+
+  can_continue: ^p{
+    return this.points_available === 0;
+  }
+
+  content: ```
+  <div class="box">
+    <h4 class="title is-4">Allocate Stats</h4>
+    <p class="block">Distribute <strong>${card.total_points}</strong> points across your five stats. Each stat must be between ${card.min_stat} and ${card.max_stat}.</p>
+    <p class="block has-text-weight-semibold">Points remaining: <span class="${card.points_remaining === 0 ? 'has-text-success' : 'has-text-warning'}">${card.points_remaining}</span></p>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Edge</label>
+      </div>
+      <div class="field-body">
+        <div class="field has-addons">
+          <p class="control">
+            <a class="button" data-event="decr_stat" data-stat="edge" ${player.edge | min_disable}>−</a>
+          </p>
+          <p class="control">
+            <span class="button is-static" style="width: 3rem;">${player.edge}</span>
+          </p>
+          <p class="control">
+            <a class="button" data-event="incr_stat" data-stat="edge" ${player.edge | max_disable: card.points_remaining}>+</a>
+          </p>
+        </div>
+        <p class="help is-inline ml-3" style="align-self: center;">Quickness, agility, prowess in ranged combat</p>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Heart</label>
+      </div>
+      <div class="field-body">
+        <div class="field has-addons">
+          <p class="control">
+            <a class="button" data-event="decr_stat" data-stat="heart" ${player.heart | min_disable}>−</a>
+          </p>
+          <p class="control">
+            <span class="button is-static" style="width: 3rem;">${player.heart}</span>
+          </p>
+          <p class="control">
+            <a class="button" data-event="incr_stat" data-stat="heart" ${player.heart | max_disable}>+</a>
+          </p>
+        </div>
+        <p class="help is-inline ml-3" style="align-self: center;">Courage, willpower, empathy, sociability</p>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Iron</label>
+      </div>
+      <div class="field-body">
+        <div class="field has-addons">
+          <p class="control">
+            <a class="button" data-event="decr_stat" data-stat="iron" ${player.iron | min_disable}>−</a>
+          </p>
+          <p class="control">
+            <span class="button is-static" style="width: 3rem;">${player.iron}</span>
+          </p>
+          <p class="control">
+            <a class="button" data-event="incr_stat" data-stat="iron" ${player.iron | max_disable}>+</a>
+          </p>
+        </div>
+        <p class="help is-inline ml-3" style="align-self: center;">Physical strength, endurance, close combat</p>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Shadow</label>
+      </div>
+      <div class="field-body">
+        <div class="field has-addons">
+          <p class="control">
+            <a class="button" data-event="decr_stat" data-stat="shadow" ${player.shadow | min_disable}>−</a>
+          </p>
+          <p class="control">
+            <span class="button is-static" style="width: 3rem;">${player.shadow}</span>
+          </p>
+          <p class="control">
+            <a class="button" data-event="incr_stat" data-stat="shadow" ${player.shadow | max_disable}>+</a>
+          </p>
+        </div>
+        <p class="help is-inline ml-3" style="align-self: center;">Stealth, deception, cunning</p>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Wits</label>
+      </div>
+      <div class="field-body">
+        <div class="field has-addons">
+          <p class="control">
+            <a class="button" data-event="decr_stat" data-stat="wits" ${player.wits | min_disable}>−</a>
+          </p>
+          <p class="control">
+            <span class="button is-static" style="width: 3rem;">${player.wits}</span>
+          </p>
+          <p class="control">
+            <a class="button" data-event="incr_stat" data-stat="wits" ${player.wits | max_disable}>+</a>
+          </p>
+        </div>
+        <p class="help is-inline ml-3" style="align-self: center;">Intelligence, perception, technical skill</p>
+      </div>
+    </div>
+
+    <div class="field mt-5">
+      <div class="control">
+        $if(card.can_continue) -> {%
+          <a card="c_intro_2" class="button is-primary">Continue</a>
+        %}
+        () -> {%
+          <button class="button is-primary" disabled>Allocate all points to continue</button>
+        %}
+      </div>
+    </div>
+  </div>
+  ```
+
+  on_incr_stat: (card, evt) => {
+    const stat = evt.stat;
+    const current = $player[stat];
+    if(current < card.max_stat && card.points_available > 0) {
+      $player[stat] = current + 1;
+      card.points_available -= 1
+    }
+    return RezEvent.render();
+  }
+
+  on_decr_stat: (card, evt) => {
+    const stat = evt.stat;
+    const current = $player[stat];
+    if(current > 1) {
+      $player[stat] = current - 1;
+      card.points_available += 1;
+    }
     return RezEvent.render();
   }
 }

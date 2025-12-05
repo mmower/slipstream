@@ -340,3 +340,26 @@
   </div>
   ```
 }
+
+@card c_intro_5 {
+  bindings: [
+    player: #player
+    friend: #npc_friend_1
+    ship: #ship_one
+  ]
+
+  content: ```
+  <div class="box">
+    <.dialog char={player}>You have yourself a pilot!</.dialog>
+    <.pb>To be in space again, flying a ship. It's an exciting feeling after being cooped up on a station for months.</.pb>
+    <.dialog char={friend}>That's great. I'm sending your bio-code to the ${ship.name} as we speak, she'll let you in.</.dialog>
+    <.dialog char={friend}>Once you're launched I'll send you the first set of coordinates.</.dialog>
+    <.pb>You nod.</.pb>
+    <.dialog char={friend}>If all goes well, we might talk about a more permanent arrangement.</.dialog>
+    <.dialog char={player}>Sounds good ${friend.first_name}, I'll be in touch.</.dialog>
+    <.pb>You wave to each other as the connection drops.</.pb>
+    <.pb>You do have some misgivings… what was that about "not asking too many questions"? Though you're pretty sure ${friend.name} wouldn't be into anything seriously illegal.</.pb>
+    <.pb><a scene="sc_hangar">Head to the hangar to check out your new ship</a></.pb>
+  </div>
+  ```
+}

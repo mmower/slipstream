@@ -89,9 +89,10 @@
   }
 }
 
-%(scenes.rez)
+%(clock.rez)
 %(player.rez)
 %(npcs.rez)
 %(ship.rez)
 %(sectors.rez)
 %(factions.rez)
+%(scenes.rez)

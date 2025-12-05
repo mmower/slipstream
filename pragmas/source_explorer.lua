@@ -138,8 +138,13 @@ function generate_source_explorer(sources, bulma_css_path, alpine_js_path, main_
     return last_folder
   end
 
-  -- Sort sources by folder then filename
+  -- Sort sources by folder then filename (grouping all files in same folder together)
   table.sort(sources, function(a, b)
+    local folder_a = get_folder(a.path)
+    local folder_b = get_folder(b.path)
+    if folder_a ~= folder_b then
+      return folder_a < folder_b
+    end
     return a.path < b.path
   end)
 

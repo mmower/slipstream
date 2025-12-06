@@ -1,20 +1,53 @@
 
+%% A set of pronouns
+
+@elem pronouns = object
+
+@defaults pronouns {
+  next_name: ^d:names
+}
+
+@pronouns he_him {
+  label: "he/him"
+  subjective: "he"
+  objective: "him"
+  possessive_determiner: "his"
+  possessive_prounoun: "his"
+  reflexive: "himself"
+
+  names_id: #male_first_names
+}
+
+@pronouns she_her {
+  label: "she/her"
+  subjective: "she"
+  objective: "her"
+  possessive_determiner: "her"
+  possessive_prounoun: "hers"
+  reflexive: "herself"
+
+  names_id: #female_first_names
+}
+
+@pronouns they_them {
+  label: "they/them"
+  subjective: "they"
+  objective: "them"
+  possessive_determiner: "their"
+  possessive_pronoum: "theirs"
+  reflexive: "themself"
+
+  names_id: #neutral_first_names
+}
+
 @elem npc = actor
 
 @defaults npc {
-  gender: :m
-  first_name: ^i:2{return this.random_first_name();}
+  pronouns_id: #he_him
+  first_name: ^i:2{return this.pronouns.next_name();}
   family_name: ^i:2{return $family_names.next();}
   name: ^p{return `${this.first_name} ${this.family_name}`;}
   dialog_tag: "You"
-
-  random_first_name: function() {
-    if(this.gender == "m") {
-      return $male_first_names.next();
-    } else {
-      return $female_first_names.next();
-    }
-  }
 }
 
 @npc player {
@@ -22,6 +55,7 @@
 
   money: 2150
 
+  pronouns_id: #he_him
   gender: :m
 
   edge: 1
@@ -35,16 +69,20 @@
   ship_id: #ship_one
 }
 
-@list male_first_names {
-  $global: true
+@elem namelist = list
 
+@defaults namelist {
   on_init: (list) => {
     list.warmStarvationPool();
   }
 
-  next: function() {
+  next_name: function() {
     return this.randomFromBag();
   }
+}
+
+@namelist male_first_names {
+  $global: true
 
   values: [
     "Kael", "Torin", "Vex", "Jace", "Seren", "Dax", "Caius", "Thane", "Zev",
@@ -58,16 +96,8 @@
   ]
 }
 
-@list female_first_names {
+@namelist female_first_names {
   $global: true
-
-  on_init: (list) => {
-    list.warmStarvationPool();
-  }
-
-  next: function() {
-    return this.randomFromBag();
-  }
 
   values: [
     "Kael", "Zira", "Mira", "Seren", "Lyra", "Nyx", "Vessa", "Renn", "Alara",
@@ -76,6 +106,12 @@
     "Jara", "Rava", "Wren", "Xara", "Zara", "Jynn", "Kova", "Qira", "Ryla",
     "Yara", "Dara", "Myra", "Pyra", "Prynn", "Senna", "Ixel"
   ]
+}
+
+@namelist neutral_first_names {
+  $global: true
+
+  includes: [#male_first_names #female_first_names]
 }
 
 @list family_names {

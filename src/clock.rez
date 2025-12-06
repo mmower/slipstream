@@ -1,5 +1,7 @@
 @object clock {
   $global: true
 
+  year: 3155
+  month: 5
   day: 1
 }

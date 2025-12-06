@@ -1,12 +1,12 @@
 @scene sc_intro {
-  initial_card_id: #c_intro
+  initial_card_id: #c_intro_name
 
   layout: ```
   <div class="container">${content}</div>
   ```
 }
 
-@card c_intro {
+@card c_intro_name {
   bindings: [
     player: #player
   ]
@@ -21,14 +21,16 @@
     <form name="name_form" class="form" rez-live>
       <h4 class="title is-4">Character</h4>
       <div class="field">
-        <label class="label">Gender</label>
+        <label class="label">Pronouns</label>
         <div class="control">
           <label class="radio">
-            <input type="radio" name="gender" value="m" rez-bind="player.gender" rez-live> Male
+            <input type="radio" name="gender" value="he_him" rez-bind="player.pronouns_id" rez-live> He/Him
           </label>
           <label class="radio">
-            <input type="radio" name="gender" value="f" rez-bind="player.gender" rez-live> Female
+            <input type="radio" name="gender" value="she_her" rez-bind="player.pronouns_id" rez-live> She/Her
           </label>
+          <label class="radio">
+            <input type="radio" name="gender" value="they_them" rez-bind="player.pronouns_id" rez-live> They/Them
         </div>
       </div>
       <div class="field">
@@ -50,8 +52,7 @@
         </div>
       </div>
       <div class="control">
-        <a card="c_intro_stats">Start Your Journey</a>
-        <!--button class="button is-primary">Start Your Journey</button-->
+        <a card="c_intro_muster">Start Your Journey</a>
       </div>
     </form>
   </div>
@@ -59,7 +60,7 @@
 
   on_input: (card, evt) => {
     if(evt.evt.target.name == "gender") {
-      $player.first_name = $player.random_first_name();
+      $player.first_name = $player.pronouns.next_name();
       return RezEvent.render();
     } else {
       return RezEvent.noop();
@@ -67,7 +68,7 @@
   }
 
   on_rand_first_name: () => {
-    $player.first_name = $player.random_first_name();
+    $player.first_name = $player.pronouns.next_name();
     return RezEvent.render();
   }
 
@@ -104,6 +105,22 @@
   } else {
     return `<a class="button" disabled>${dir}</a>`;
   }
+}
+
+@card c_intro_muster {
+  bindings: [
+    player: #player
+    sector: player.sector
+    clock: #clock
+  ]
+  content: ```
+  <div class="box">
+  <.pb>It's ${clock.year} of the new calendar and ${clock.month} 5 months since you
+  mustered out of the Confederation Navy as a pilot Lieutenant. You got dumped on ${sector.name} station
+  and have been here ever since.</.pb>
+  <a card="c_intro_stats">What did your military years teach you</a>
+  </div>
+  ```
 }
 
 @card c_intro_stats {

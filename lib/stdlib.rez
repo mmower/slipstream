@@ -1408,6 +1408,19 @@
 %% Template Filters
 %% ----------------------------------------------------------------------------
 
+@filter N_PLURAL_FILTER {
+  $built_in: true
+
+  %% n, s -> s
+  name: "nplural"
+  impl: (n, s) => {
+    if(n > 1) {
+      s = pluralize(s);
+    }
+
+    return `${n} ${s}`;
+  }
+}
 @filter COMPARE_EQ_FILTER {
   $built_in: true
 
@@ -1650,20 +1663,6 @@
   %% String -> String
   name: "upcase"
   impl: (s) => {return s.toUpperCase();}
-}
-
-@filter STRING_PLURAL_N_FILTER {
-  $build_in: true
-
-  %% String, n -> String
-  name: "plural_n"
-  impl: (s, n) => {
-    if(n === 1) {
-      return s;
-    } else {
-      return pluralize(s);
-    }
-  }
 }
 
 @filter STRING_PLURALIZE_FILTER {

@@ -8,12 +8,13 @@
 
 @card c_intro_name {
   bindings: [
+    game: #game
     player: #player
   ]
   content: ```
   <section class="hero">
     <div class="hero-body">
-      <p class="title">${card.game.title} B${$build}</p>
+      <p class="title">${card.game.title} Version: ${game.version}b${$BUILD_NUM}</p>
       <p class="subtitle">From <span class="has-text-primary">${card.game.author}</span></p>
     </div>
   </section>
@@ -115,7 +116,7 @@
   ]
   content: ```
   <div class="box">
-  <.pb>It's ${clock.year} of the new calendar, and 5 months since you mustered out of the Confederation Navy as a pilot Lieutenant.</.pb>
+  <.pb>It's ${clock.year} of the new calendar, and ${clock.month | nplural: "month"} since you mustered out of the Confederation Navy as a pilot Lieutenant.</.pb>
   <.pb> You ended your tour on ${sector.name} and have been living on the station ever since.</.pb>
   <a card="c_intro_stats">What did your military years teach you</a>
   </div>

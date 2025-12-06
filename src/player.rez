@@ -31,6 +31,8 @@
   wits: 1
 
   sector_id: #tarsus_sector
+
+  ship_id: #ship_one
 }
 
 @list male_first_names {

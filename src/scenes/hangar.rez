@@ -4,7 +4,8 @@
 
 @card c_hangar_1 {
   bindings: [
-    ship: #ship
+    player: #player
+    ship: player.ship
   ]
 
   content: ```

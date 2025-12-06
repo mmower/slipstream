@@ -1,6 +1,11 @@
 @scene sc_cockpit {
   initial_card_id: #c_cockpit_1
 
+  bindings: [
+    player: #player
+    ship: player.ship
+  ]
+
   blocks: [#c_cockpit_sidebar]
 
   layout: ```
@@ -9,7 +14,9 @@
       ${c_cockpit_sidebar}
     </div>
     <div class="column">
-      ${content}
+      <div class="container">
+        ${content}
+      </div>
     </div>
   </div>
   ```
@@ -19,17 +26,54 @@
   bindings: [
     player: #player
     sector: player.sector
+    ship: player.ship
   ]
   content: ```
-  <div>
-    <.pb>Sector: ${sector.name}</.pb>
+  <div class="container">
+    <div class="box">
+      <h6 class="title is-6">Sector</h6>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>${sector.name}</td>
+          </tr>
+          <tr>
+            <td>Docked</td>
+            <td>${ship.docked | bsel: ["Docked", "Deep Space"]}</td>
+          </tr>
+          <tr>
+            <td>Danger</td>
+            <td>${sector.danger | sel: ["Safe", "Low Risk", "Moderate Threat", "High Threat", "Extreme Danger"]}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box">
+      <h6 class="title is-6">Ship</h6>
+      <table class="table">
+      <tr>
+        <td>Name</td>
+        <td>${ship.name}</td>
+      </tr>
+      <tr>
+        <td>Designation</td>
+        <td>${ship.purpose}</td>
+      </tr>
+      <tr>
+        <td>Mass</td>
+        <td>${ship.mass}</td>
+      </tr>
+      </table>
+    </div>
   </div>
   ```
 }
 
 @card c_cockpit_1 {
   bindings: [
-    ship: #ship
+    player: #player
+    ship: player.ship
   ]
   content: ```
   <.pb>You are in the cockpit of ${ship.name}</.pb>

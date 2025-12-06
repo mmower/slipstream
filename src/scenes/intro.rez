@@ -9,7 +9,6 @@
 @card c_intro {
   bindings: [
     player: #player
-    ship: #ship
   ]
   content: ```
   <section class="hero">
@@ -50,15 +49,6 @@
           </span>
         </div>
       </div>
-      <!--div class="field">
-        <label class="label">Ship Name</label>
-        <div class="control has-icons-right">
-          <input class="input" type="text" name="ship_name" rez-bind="ship.name">
-          <span class="icon is-right">
-            <.icon icon="arrow_path" event="rand_ship_name" />
-          </span>
-        </div>
-      </div-->
       <div class="control">
         <a card="c_intro_stats">Start Your Journey</a>
         <!--button class="button is-primary">Start Your Journey</button-->
@@ -66,10 +56,6 @@
     </form>
   </div>
   ```
-
-  %% on_name_form: () => {
-  %%   return RezEvent.playCard("c_intro_stats");
-  %% }
 
   on_input: (card, evt) => {
     if(evt.evt.target.name == "gender") {
@@ -96,28 +82,9 @@
   }
 }
 
-@filter FILTER_MIN_DISABLE {
-  name: "min_disable"
-  impl: (v1) => {
-    if(v1 < 2) {
-      return "disabled";
-    } else {
-      return "";
-    }
-  }
-}
-
-@filter FILTER_MAX_DISABLE {
-  name: "max_disable"
-  impl: (v1, v2) => {
-    if(v1 == 3 || v2 == 0) {
-      return "disabled";
-    } else {
-      return "";
-    }
-  }
-}
-
+%% A component the displays a +/- link as a button
+%% depending on whether it should be enabled for a
+%% given stat and remaning points to allocate.
 @component assign_points_button (bindings, assigns, content) => {
   const {char, stat, avail, dir} = assigns;
 
@@ -341,7 +308,7 @@
   bindings: [
     player: #player
     friend: #npc_friend_1
-    ship: #ship_one
+    ship: player.ship
   ]
 
   content: ```
@@ -366,7 +333,7 @@
   bindings: [
     player: #player
     friend: #npc_friend_1
-    ship: #ship_one
+    ship: player.ship
   ]
 
   content: ```

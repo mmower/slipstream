@@ -4,5 +4,11 @@
 
 @sector tarsus_sector {
   name: "Tarsus"
-  danger: 2
+  danger: 0
+}
+
+
+@sector avel_sector {
+  name: "Avel"
+  danger: 1
 }

@@ -1,15 +1,12 @@
-@actor ship {
-  $global: true
-
-  name: ^i{return $ship_names.next();}
-  container: ^c:#T_ship_inventory
-
-  hull_id: #hull_kx_40
-}
-
 @actor ship_one {
   name: ^i{return $ship_names.next();}
 
+  purpose: ^d:hull
+  mass: ^d:hull
+
+  docked: true
+
+  hull_id: #hull_kx_40
 }
 
 %%
@@ -205,9 +202,30 @@
 
 @elem hull = object
 
+@hull hull_te_21 {
+  manufacturer: "Vondor Yards"
+  designation: "TE-21"
+  mass: 8000
+  purpose: "Scout"
+}
+
 @hull hull_kx_40 {
   manufacturer: "Kondine Heavy Industries"
   designation: "KX-40"
   mass: 15000
   purpose: "Cargo Hauler"
+}
+
+@hull hull_zep_2000 {
+  manufacture: "Zeptis Confederated Arms"
+  designation: "ZEP-2K"
+  mass: 10000
+  purpose: "Strike Craft"
+}
+
+@hull hull_arc_11e {
+  manufacturer: "Stateful Arc Systems"
+  designation: "AC-11E"
+  mass: 13000
+  purpose: "Light Haulcraft"
 }

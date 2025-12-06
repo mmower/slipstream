@@ -115,9 +115,8 @@
   ]
   content: ```
   <div class="box">
-  <.pb>It's ${clock.year} of the new calendar and ${clock.month} 5 months since you
-  mustered out of the Confederation Navy as a pilot Lieutenant. You got dumped on ${sector.name} station
-  and have been here ever since.</.pb>
+  <.pb>It's ${clock.year} of the new calendar, and 5 months since you mustered out of the Confederation Navy as a pilot Lieutenant.</.pb>
+  <.pb> You ended your tour on ${sector.name} and have been living on the station ever since.</.pb>
   <a card="c_intro_stats">What did your military years teach you</a>
   </div>
   ```

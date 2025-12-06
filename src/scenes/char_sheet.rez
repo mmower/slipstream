@@ -15,7 +15,7 @@
   initial_card_id: #c_char_sheet
   bindings: [
     player: #player
-    ship: #ship
+    ship: player.ship
   ]
 }
 
@@ -25,10 +25,38 @@
   <div class="columns">
     <div class="column is-one-half">
       <h4 class="title is-4">Character</h4>
-      <div>Name</div>
-      <div>${player.name}</div>
-      <div>Credits</div>
-      <div>${player.money}</div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>${player.name}</td>
+          </tr>
+          <tr>
+            <td>Credits</td>
+            <td><.money amount={player.money} /></td>
+          </tr>
+          <tr>
+            <td>Edge</td>
+            <td>${player.edge}</td>
+          </tr>
+          <tr>
+            <td>Heart</td>
+            <td>${player.heart}</td>
+          </tr>
+          <tr>
+            <td>Iron</td>
+            <td>${player.iron}</td>
+          </tr>
+          <tr>
+            <td>Shadow</td>
+            <td>${player.shadow}</td>
+          </tr>
+          <tr>
+            <td>Wits</td>
+            <td>${player.wits}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="column">
       <h4 class="title is-4">Ship</h4>

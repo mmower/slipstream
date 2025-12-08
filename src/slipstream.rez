@@ -90,6 +90,7 @@
 }
 
 %(clock.rez)
+%(names.rez)
 %(player.rez)
 %(npcs.rez)
 %(ship.rez)

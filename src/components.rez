@@ -70,13 +70,35 @@
   }
 }
 
+@const dialog_size = "is-size-6"
+@const default_dialog_color = "#485fc7"
+
 @component dialog (bindings, assigns, content) => {
   console.dir(assigns);
   const char = assigns["char"];
-  const tag = char.dialog_tag ? ` (${char.dialog_tag})` : "";
-  const color = char.dialog_color || "#485fc7";
-  const name = (assigns["first"] || false) ? char.name : char.first_name;
-  return `<div class="dialog-box"><p class="speaker-name is-size-5" style="background: ${color}">${name}${tag}</p><div class="dialog-content">${content}</div></div>`;
+  let speaker;
+  if(char.dialog_tag) {
+    speaker = char.dialog_tag;
+  } else if(char.first_name) {
+    speaker = char.first_name;
+  } else {
+    speaker = char.name;
+  }
+
+  let size = $dialog_size;
+  if(assigns["size"]) {
+    size = assigns["size"];
+  }
+
+  %% const tag = char.dialog_tag ? ` (${char.dialog_tag})` : "";
+  let color = $default_dialog_color;
+  if(assigns["color"]) {
+    color = assigns["color"];
+  } else if(char.dialog_color) {
+    color = char.dialog_color;
+  }
+  %% const name = (assigns["first"] || false) ? char.name : char.first_name;
+  return `<div class="dialog-box"><p class="speaker-name ${size}" style="background: ${color}">${speaker}</p><div class="dialog-content">${content}</div></div>`;
 }
 
 @component money (bindings, assigns, content) => {

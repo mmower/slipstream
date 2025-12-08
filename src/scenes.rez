@@ -1,4 +1,23 @@
+@elem scene_2cl = scene
+
+@defaults scene_2cl {
+  layout: ```
+  <div class="columns">
+    <div class="column is-one-quarter">
+      ${sidebar}
+    </div>
+    <div class="column">
+      <div class="container">
+        ${content}
+      </div>
+    </div>
+  </div>
+  ```
+}
+
 %(scenes/intro.rez)
 %(scenes/char_sheet.rez)
 %(scenes/hangar.rez)
 %(scenes/cockpit.rez)
+%(scenes/nav_systems.rez)
+%(scenes/nav_waypoints.rez)

@@ -1,14 +1,87 @@
 
+%% A @system represents a star and what surrounds it.
+%% It is assumed that inhabited sectors have a planet or a station
+%% A system has a number of waypoints that can be navigated to
+%%
+@elem star_system = object
+
+@defaults star_system {
+  name: ^i{return $("star_system_names").next_name();}
+  danger: ^i{return Math.cl_rand_int_between(0, 5);}
+  code: ^i{return $star_system_designations.randomFromBag();}
+}
+
+@star_system T_star_system {
+  $template: true
+
+  on_copy: (system) => {
+    //
+  }
+}
+
+@star_system home_system {
+  $init_after: [#star_system_designations]
+  danger: 0
+}
+
+@list star_system_designations {
+  $global: true
+  $init_after: [#star_system_names]
+
+  values: []
+
+  generate_system_code: function() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    // Pick two random letters
+    const a = letters[Math.floor(Math.random() * letters.length)];
+    const b = letters[Math.floor(Math.random() * letters.length)];
+
+    // Pick a 3-digit ID
+    const id = Math.floor(Math.random() * 1000)
+                .toString()
+                .padStart(3, "0");
+
+    return `${a}${b}-${id}`;
+  }
+
+  on_init: (list) => {
+    debugger;
+    const required_count = $("star_system_names").length;
+
+    for(let i = 0; i<required_count; i++) {
+      let assigned = false;
+      do {
+        const code = list.generate_system_code();
+        if(!list.values.includes(code)) {
+          list.values.push(code);
+          assigned = true;
+        }
+      } while(!assigned)
+    }
+  }
+}
+
+
+
+%% A @waypoint represents a navigable point of interest within a star system
+
+@elem waypoint = object
+
+
+%% A @sector represents a set of star systems
 
 @elem sector = object
 
 @sector tarsus_sector {
+  $global: true
+
   name: "Tarsus"
-  danger: 0
+  systems_id: #system_list
 }
 
-
-@sector avel_sector {
-  name: "Avel"
-  danger: 1
+@generator system_list {
+  source: #T_star_system
+  copies: 100
+  priority: 1
 }

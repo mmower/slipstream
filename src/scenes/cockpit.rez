@@ -1,4 +1,4 @@
-@scene sc_cockpit {
+@scene_2cl sc_cockpit {
   initial_card_id: #c_cockpit_1
 
   bindings: [
@@ -6,37 +6,24 @@
     ship: player.ship
   ]
 
-  blocks: [#c_cockpit_sidebar]
-
-  layout: ```
-  <div class="columns">
-    <div class="column is-one-quarter">
-      ${c_cockpit_sidebar}
-    </div>
-    <div class="column">
-      <div class="container">
-        ${content}
-      </div>
-    </div>
-  </div>
-  ```
+  blocks: [sidebar: #c_cockpit_sidebar]
 }
 
 @card c_cockpit_sidebar {
   bindings: [
     player: #player
-    sector: player.sector
+    system: player.system
     ship: player.ship
   ]
   content: ```
   <div class="container">
     <div class="box">
-      <h6 class="title is-6">Sector</h6>
+      <h6 class="title is-6">System</h6>
       <table class="table">
         <tbody>
           <tr>
             <td>Name</td>
-            <td>${sector.name}</td>
+            <td>${system.name}</td>
           </tr>
           <tr>
             <td>Docked</td>
@@ -44,7 +31,7 @@
           </tr>
           <tr>
             <td>Danger</td>
-            <td>${sector.danger | sel: ["Safe", "Low Risk", "Moderate Threat", "High Threat", "Extreme Danger"]}</td>
+            <td>${system.danger | sel: ["Safe", "Low Risk", "Moderate Threat", "High Threat", "Extreme Danger"]}</td>
           </tr>
         </tbody>
       </table>
@@ -65,6 +52,14 @@
         <td>${ship.mass}</td>
       </tr>
       </table>
+    </div>
+
+    <div class="box">
+      <ul class="content">
+        <li><a scene="sc_hangar">Leave the Ship</a></li>
+        <li><a scene="sc_nav_systems">Astro Navigation</a></li>
+        <li><a scene="sc_nav_waypoints">Launch</a></li>
+      </ul>
     </div>
   </div>
   ```

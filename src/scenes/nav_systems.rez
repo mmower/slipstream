@@ -1,0 +1,31 @@
+@scene_2cl sc_nav_systems {
+  initial_card_id: #c_system_list
+
+  %% Designate the block this 2-col layout will use as the sidebar
+  blocks: [sidebar: #c_cockpit_sidebar]
+}
+
+@card c_system_list {
+  bindings: [
+    systems: #system_list
+  ]
+  content: ```
+  <table class="table">
+    <caption>Astrogation</caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Danger</th>
+      </tr>
+    </thead>
+    <tbody>
+    $foreach(system: systems.values) {%
+      <tr>
+        <td>${system.name}</td>
+        <td>${system.danger}</td>
+      </tr>
+    %}
+    </tbody>
+  </table>
+  ```
+}

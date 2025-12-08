@@ -45,7 +45,7 @@
 @defaults npc {
   pronouns_id: #he_him
   first_name: ^i:2{return this.pronouns.next_name();}
-  family_name: ^i:2{return $family_names.next();}
+  family_name: ^i:2{return $family_names.next_name();}
   name: ^p{return `${this.first_name} ${this.family_name}`;}
   dialog_tag: "You"
 }
@@ -64,77 +64,7 @@
   shadow: 1
   wits: 1
 
-  sector_id: #tarsus_sector
+  system_id: #home_system
 
   ship_id: #ship_one
-}
-
-@elem namelist = list
-
-@defaults namelist {
-  on_init: (list) => {
-    list.warmStarvationPool();
-  }
-
-  next_name: function() {
-    return this.randomFromBag();
-  }
-}
-
-@namelist male_first_names {
-  $global: true
-
-  values: [
-    "Kael", "Torin", "Vex", "Jace", "Seren", "Dax", "Caius", "Thane", "Zev",
-    "Renn", "Kiran", "Borin", "Vorn", "Drex", "Joren", "Kal", "Talon", "Vance",
-    "Caden", "Jex", "Zander", "Rax", "Doran", "Bryn", "Sev", "Fenn", "Galen",
-    "Isen", "Lorren", "Marek", "Oryn", "Quell", "Solan", "Taren", "Varen",
-    "Yoren", "Aran", "Bex", "Dorin", "Falken", "Grenn", "Halen", "Jynn",
-    "Lorn", "Nev", "Orin", "Prynn", "Tavos", "Ulen", "Wylan", "Xev", "Arik",
-    "Bren", "Cael", "Ezrik", "Fennix", "Gavos", "Hux", "Ixel", "Jareth",
-    "Korath", "Lev", "Norin", "Tyrell"
-  ]
-}
-
-@namelist female_first_names {
-  $global: true
-
-  values: [
-    "Kael", "Zira", "Mira", "Seren", "Lyra", "Nyx", "Vessa", "Renn", "Alara",
-    "Cira", "Talia", "Kiran", "Nessa", "Elara", "Zaya", "Sira", "Nira", "Kyra",
-    "Lira", "Tira", "Maren", "Vela", "Kessa", "Bryn", "Corva", "Eira", "Hira",
-    "Jara", "Rava", "Wren", "Xara", "Zara", "Jynn", "Kova", "Qira", "Ryla",
-    "Yara", "Dara", "Myra", "Pyra", "Prynn", "Senna", "Ixel"
-  ]
-}
-
-@namelist neutral_first_names {
-  $global: true
-
-  includes: [#male_first_names #female_first_names]
-}
-
-@list family_names {
-  $global: true
-
-  on_init: (list) => {
-    list.warmStarvationPool();
-  }
-
-  next: function() {
-    return this.randomFromBag();
-  }
-
-  values: [
-    "Vex", "Talor", "Kress", "Morn", "Draven", "Skar", "Venn", "Torek", "Rynn", "Kallos",
-    "Drex", "Vash", "Sorren", "Kael", "Thorne", "Vesper", "Krynn", "Dorn", "Malakai", "Fenn",
-    "Tarkin", "Vexor", "Koda", "Strenn", "Rhyne", "Varro", "Korr", "Daxon", "Seren", "Keth",
-    "Vorn", "Talis", "Ryker", "Kellan", "Thresh", "Vorax", "Kira", "Brax", "Solari", "Vrek",
-    "Tann", "Korvus", "Drell", "Vexx", "Orun", "Kavex", "Renn", "Daxxon", "Vel", "Tarn",
-    "Kressig", "Valen", "Morrik", "Fennex", "Karrus", "Drynn", "Skarath", "Vexis", "Lorek", "Kyrell",
-    "Voss", "Tarren", "Kraxx", "Delvari", "Zorn", "Kavros", "Synn", "Rexor", "Valdris", "Korrax",
-    "Thrynn", "Vexan", "Malor", "Korith", "Fennor", "Darek", "Skaros", "Vix", "Kelrath", "Dorrex",
-    "Kravik", "Sennar", "Vexil", "Korvan", "Draxen", "Torvex", "Rennix", "Kallax", "Vexen", "Sorrax",
-    "Kravos", "Delvex", "Thorrax", "Velix", "Karoth", "Fennix", "Drakkos", "Vorryn", "Skalor", "Krevex"
-  ]
 }

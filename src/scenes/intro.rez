@@ -74,12 +74,12 @@
   }
 
   on_rand_family_name: () => {
-    $player.family_name = $family_names.next();
+    $player.family_name = $family_names.next_name();
     return RezEvent.render();
   }
 
   on_rand_ship_name: () => {
-    $ship.name = $ship_names.next();
+    $ship.name = $ship_names.next_name();
     return RezEvent.render();
   }
 }
@@ -111,13 +111,13 @@
 @card c_intro_muster {
   bindings: [
     player: #player
-    sector: player.sector
+    system: player.system
     clock: #clock
   ]
   content: ```
   <div class="box">
   <.pb>It's ${clock.year} of the new calendar, and ${clock.month | nplural: "month"} since you mustered out of the Confederation Navy as a pilot Lieutenant.</.pb>
-  <.pb> You ended your tour on ${sector.name} and have been living on the station ever since.</.pb>
+  <.pb> You ended your tour on ${system.name} and have been living on the station ever since.</.pb>
   <a card="c_intro_stats">What did your military years teach you</a>
   </div>
   ```

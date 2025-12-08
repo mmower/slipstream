@@ -1,0 +1,9 @@
+@scene sc_nav_waypoints {
+  initial_card_id: #c_nav_waypoints
+}
+
+@card c_nav_waypoints {
+  content: ```
+  WAYPOINTS
+  ```
+}
